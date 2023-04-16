@@ -141,25 +141,28 @@ namespace MultiThreading.Task6.Continuation
 
             var task = Task.Factory.StartNew(() =>
             {
-                Console.WriteLine("Thread id is {0}", Thread.CurrentThread.ManagedThreadId);
+                IsThisThreadFromPool();
                 while (true)
                 {
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        break;
-                    }
+                    cancellationToken.ThrowIfCancellationRequested();
                 }
             }, cancellationToken);
 
             var continuation = task.ContinueWith(antecedent =>
             {
-                Console.WriteLine("Thread id is {0}", Thread.CurrentThread.ManagedThreadId);
+                IsThisThreadFromPool();
                 Console.WriteLine("Continuation is called when parent task was cancelled");
-            }, TaskContinuationOptions.OnlyOnCanceled);
+            }, TaskContinuationOptions.OnlyOnCanceled | TaskContinuationOptions.LongRunning);
 
             taskSource.Cancel();
 
             await continuation;
+        }
+
+        static void IsThisThreadFromPool()
+        {
+            Console.WriteLine("Current thread is{0} from Thread pool", 
+                Thread.CurrentThread.IsThreadPoolThread ? string.Empty : " not");
         }
     }
 }
