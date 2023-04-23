@@ -8,6 +8,8 @@
 */
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AsyncAwait.Task1.CancellationTokens;
 
@@ -27,11 +29,21 @@ internal class Program
         Console.WriteLine("Enter N: ");
 
         var input = Console.ReadLine();
+
+        var cancellationSource = new CancellationTokenSource();
+        var cancellationToken = cancellationSource.Token;
+
+
         while (input.Trim().ToUpper() != "Q")
         {
+            if (!cancellationToken.IsCancellationRequested)
+            {
+                cancellationSource.Cancel();
+            }
+            
             if (int.TryParse(input, out var n))
             {
-                CalculateSum(n);
+                CalculateSum(n, cancellationToken);
             }
             else
             {
@@ -46,16 +58,23 @@ internal class Program
         Console.ReadLine();
     }
 
-    private static void CalculateSum(int n)
+    private static void CalculateSum(int n, CancellationToken cancellationToken)
     {
-        // todo: make calculation asynchronous
-        var sum = Calculator.Calculate(n);
-        Console.WriteLine($"Sum for {n} = {sum}.");
-        Console.WriteLine();
-        Console.WriteLine("Enter N: ");
-        // todo: add code to process cancellation and uncomment this line    
-        // Console.WriteLine($"Sum for {n} cancelled...");
-
-        Console.WriteLine($"The task for {n} started... Enter N to cancel the request:");
+        try
+        {
+            // todo: make calculation asynchronous
+            Console.WriteLine($"The task for {n} started... Enter N to cancel the request:");
+            Calculator.CalculateAsync(n, cancellationToken).ContinueWith(resTask =>
+            {
+                var sum = resTask.Result;
+                Console.WriteLine($"Sum for {n} = {sum}.");
+                Console.WriteLine();
+                Console.WriteLine("Enter N: ");  
+            });
+        }
+        catch(OperationCanceledException)
+        {
+            Console.WriteLine($"Sum for {n} cancelled..."); 
+        }
     }
 }
