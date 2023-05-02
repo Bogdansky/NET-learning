@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DataCaptureService": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\Bahdan_Kalishok\\Desktop\\work\" pdf"
+    }
+  }
+}
