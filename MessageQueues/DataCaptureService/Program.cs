@@ -1,25 +1,23 @@
 ﻿using System.Text;
 using System.Text.Json;
 using Confluent.Kafka;
-using DataCaptureService.Models;
+using Infrastructure.Enums;
+using Infrastructure.Models;
 
 namespace DataCaptureService
 {
     /*
-     Implement Data capture service which will listen to a specific local folder 
-     and retrieve documents of some specific format (i.e., PDF)
+         Implement Data capture service which will listen to a specific local folder 
+         and retrieve documents of some specific format (i.e., PDF)
      */
     internal class Program
     {
-        private const string DefaultDirectory = "\\files";
-        private const string DefaultFormat = "pdf";
-
         private static IProducer<Null, string> _producer; 
 
         static void Main(string[] args)
         {
-            var path = args[0] ?? Environment.CurrentDirectory + DefaultDirectory;
-            var format = args[1] ?? DefaultFormat;
+            var path = args[0] ?? Environment.CurrentDirectory + FileMessagesConsts.DefaultDirectory;
+            var format = args[1] ?? FileMessagesConsts.DefaultFormat;
 
             if(!MonitorValidator.ValidateArgs(path, format, out var message))
             {
@@ -61,10 +59,55 @@ namespace DataCaptureService
 
         private static void OnCreated(object sender, FileSystemEventArgs e)
         {
-            var message = JsonSerializer.Serialize(new FileCreatedMessage(e.Name));
-            var kafkaMessage = new Message<Null, string> { Value = message };
+            var firstMessage = GetFileCreatedMessage(e.FullPath, e.Name);
 
-            _producer.Produce("file-messages", kafkaMessage);
+            try
+            {
+                _producer.Produce(FileMessagesConsts.Topic, firstMessage, OnDeliveryHandler);
+
+                using var stream = new FileStream(e.FullPath, FileMode.Open);
+
+                while (true)
+                {
+                    var buffer = new byte[FileMessagesConsts.DataTransferSizeInBytes];
+                    var bytesNumber = stream.Read(buffer, 0, buffer.Length);
+
+                    if (bytesNumber == 0)
+                    {
+                        break;
+                    }
+
+                    var fileTransferMessage = new FileTransferMessage(e.Name, stream.Position, buffer);
+                    var kafkaMessage = new KafkaMessage(MessageTypesEnum.FileTranser, JsonSerializer.Serialize(fileTransferMessage));
+
+                    _producer.Produce(
+                        FileMessagesConsts.Topic,
+                        new Message<Null, string> { Value = JsonSerializer.Serialize(kafkaMessage) },
+                        OnDeliveryHandler);
+
+                    Console.WriteLine("{0} bytes was read. Position {1}.", bytesNumber, stream.Position);
+                }
+            }
+            catch
+            {
+                Console.WriteLine("There was arisen exception during OnCreated handling");
+            }
+        }
+
+        private static Message<Null, string> GetFileCreatedMessage(string path, string name)
+        {
+            var fileInfo = new FileInfo(path);
+
+            var fileCreatedMessage = new FileCreatedMessage(name, MessagesHelper.GetChunksNumber(fileInfo.Length, FileMessagesConsts.DataTransferSizeInBytes));
+            var message = new KafkaMessage(MessageTypesEnum.FileCreated, JsonSerializer.Serialize(fileCreatedMessage));
+
+            return new Message<Null, string> { Value = JsonSerializer.Serialize(message) };
+        }
+
+        private static void OnDeliveryHandler(DeliveryReport<Null, string> obj)
+        {
+            Console.WriteLine("On-delivery handler is called with status {0}", obj.Status);
+            Console.WriteLine("Whole object: {0}", JsonSerializer.Serialize(obj));
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace DataCaptureService.Models
+﻿namespace Infrastructure.Models
 {
-    internal class FileCapturedModel
+    public class FileCapturedModel
     {
         public string Format { get; }
         public string Path { get; }

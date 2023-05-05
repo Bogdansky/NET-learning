@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
-using System.Threading;
-using Confluent.Kafka;
 using MainProcessingService.Models;
+using Confluent.Kafka;
 
 namespace MainProcessingService
 {
@@ -11,47 +10,18 @@ namespace MainProcessingService
 
         static void Main(string[] args)
         {
-            var config = new ConsumerConfig
-            {
-                BootstrapServers = "localhost:9092",
-                GroupId = "file-consumer",
-                AutoOffsetReset = AutoOffsetReset.Earliest
-            };
-
-            using var consumer = new ConsumerBuilder<Ignore, string>(config).Build();
-
-            consumer.Subscribe(Topic);
-
+            var service = new FileProcessor(Topic);
             var cancellationSource = new CancellationTokenSource();
 
-            var task = Task.Factory.StartNew((obj) =>
-            {
-                ConsumeMessages(obj as IConsumer<Ignore, string>, cancellationSource.Token);
-            }, consumer, cancellationSource.Token);
-        }
+            service.ConsumeTopicMessagesAsync(cancellationSource.Token);
 
-        private static void ConsumeMessages(IConsumer<Ignore, string> consumer, CancellationToken cancellationToken)
-        {
-            while(true)
+            while (true)
             {
-                if (cancellationToken.IsCancellationRequested)
-                    break;
-
-                var result = consumer.Consume(TimeSpan.FromMilliseconds(10));
-                HandleMessage(result.Message.Value);
+                if (Console.ReadLine()?.ToLower() == "q")
+                {
+                    cancellationSource.Cancel();
+                }
             }
-        }
-
-        private static void HandleMessage(string message)
-        {
-            if (message is null)
-            {
-                return;
-            }
-
-            var fileMessage = JsonSerializer.Deserialize<FileCreatedMessage>(message);
-
-            Console.WriteLine(fileMessage?.Name);
         }
     }
 }

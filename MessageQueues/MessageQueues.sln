@@ -5,7 +5,9 @@ VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCaptureService", "DataCaptureService\DataCaptureService.csproj", "{A10CDBA4-2200-4FE6-AF3A-327EA2DFC3BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainProcessingService", "MainProcessingService\MainProcessingService.csproj", "{F446C95C-8BF6-4A69-B9A4-68996F40885A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MainProcessingService", "MainProcessingService\MainProcessingService.csproj", "{F446C95C-8BF6-4A69-B9A4-68996F40885A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{0328C117-10B7-432C-8B2C-3BCCDD8682DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F446C95C-8BF6-4A69-B9A4-68996F40885A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F446C95C-8BF6-4A69-B9A4-68996F40885A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F446C95C-8BF6-4A69-B9A4-68996F40885A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0328C117-10B7-432C-8B2C-3BCCDD8682DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0328C117-10B7-432C-8B2C-3BCCDD8682DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0328C117-10B7-432C-8B2C-3BCCDD8682DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0328C117-10B7-432C-8B2C-3BCCDD8682DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
