@@ -10,7 +10,7 @@ namespace DataCaptureService
     {
         public const string DefaultDirectory = "\\files";
         public const string DefaultFormat = "pdf";
-        public const long DataTransferSizeInBytes = 5_242_880;
+        public const long DataTransferSizeInBytes = 1024;
         public const string Topic = "file-messages";
     }
 }

@@ -3,9 +3,9 @@
     public class FileCreatedMessage
     {
         public string Name { get; }
-        public int ChunksNumber { get; }
+        public long ChunksNumber { get; }
 
-        public FileCreatedMessage(string name, int chunksNumber)
+        public FileCreatedMessage(string name, long chunksNumber)
         {
             Name = name;
             ChunksNumber = chunksNumber;

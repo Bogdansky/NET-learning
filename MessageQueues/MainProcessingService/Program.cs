@@ -15,6 +15,7 @@ namespace MainProcessingService
 
             service.ConsumeTopicMessagesAsync(cancellationSource.Token);
 
+            Console.WriteLine("Press \"q\" to exit");
             while (true)
             {
                 if (Console.ReadLine()?.ToLower() == "q")
