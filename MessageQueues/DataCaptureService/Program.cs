@@ -1,8 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using Confluent.Kafka;
-using Infrastructure.Enums;
-using Infrastructure.Models;
+using DataCaptureService.Services;
 
 namespace DataCaptureService
 {
@@ -27,7 +26,7 @@ namespace DataCaptureService
                 BootstrapServers = "localhost:9092"
             }).Build();
 
-            var processor = new CapturingProcessor(path, format, producer);
+            ICapturingProcessor processor = new CapturingProcessor(path, format, producer);
 
             var cancellationSource = new CancellationTokenSource();
 

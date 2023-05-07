@@ -3,9 +3,9 @@ using Confluent.Kafka;
 using Infrastructure.Enums;
 using Infrastructure.Models;
 
-namespace MainProcessingService
+namespace MainProcessingService.Services
 {
-    internal class FileProcessor
+    internal class FileProcessor : IFileProcessor
     {
         private readonly string _topic;
         private readonly Dictionary<string, long> _files;
@@ -15,7 +15,6 @@ namespace MainProcessingService
         {
             _topic = topic;
             _files = new Dictionary<string, long>();
-
             _fileStorageDirectory = Environment.CurrentDirectory + "/files";
         }
 
@@ -39,7 +38,7 @@ namespace MainProcessingService
                     ConsumeMessages(obj as IConsumer<Ignore, string>, token);
                 }, consumer, token);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);

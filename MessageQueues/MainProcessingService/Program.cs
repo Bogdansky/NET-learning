@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
-using MainProcessingService.Models;
 using Confluent.Kafka;
+using MainProcessingService.Services;
 
 namespace MainProcessingService
 {

@@ -8,9 +8,9 @@ using Confluent.Kafka;
 using Infrastructure.Enums;
 using Infrastructure.Models;
 
-namespace DataCaptureService
+namespace DataCaptureService.Services
 {
-    internal class CapturingProcessor
+    internal class CapturingProcessor : ICapturingProcessor
     {
         private readonly string _path;
         private readonly string _format;
@@ -89,7 +89,7 @@ namespace DataCaptureService
 
                 return true;
             }
-            catch(IOException)
+            catch (IOException)
             {
                 return false;
             }
@@ -110,7 +110,7 @@ namespace DataCaptureService
             var buffer = new byte[FileMessagesConsts.DataTransferSizeInBytes];
             var bytesNumber = stream.Read(buffer, 0, buffer.Length);
 
-            if (bytesNumber == 0) 
+            if (bytesNumber == 0)
             {
                 return false;
             }
