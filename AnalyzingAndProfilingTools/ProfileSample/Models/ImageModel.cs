@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ProfileSample.Models
+﻿namespace ProfileSample.Models
 {
     public class ImageModel
     {
