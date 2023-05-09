@@ -34,46 +34,51 @@ namespace ProfileSample.Controllers
                 model.Add(obj);
             }*/
 
-            var model = await context.ImgSources
+            var sources = await context.ImgSources
                 .Take(20)
-                .Select(x => new ImageModel()
-                {
-                    Name = x.Name,
-                    Data = x.Data
-                })
+                .Select(x => x.Data)
                 .ToListAsync();
+
+            var model = sources.Select(x =>
+            {
+                var converted = Convert.ToBase64String(x);
+                return new ImageModel
+                {
+                    ImageSourceAttribute = string.Format("data:image/jpg;base64,{0}", converted)
+                };
+            }).ToList();
 
             return View(model);
         }
 
-        public ActionResult Convert()
-        {
-            var files = Directory.GetFiles(Server.MapPath("~/Content/Img"), "*.jpg");
+        //public ActionResult Convert()
+        //{
+        //    var files = Directory.GetFiles(Server.MapPath("~/Content/Img"), "*.jpg");
 
-            using (var context = new ProfileSampleEntities())
-            {
-                foreach (var file in files)
-                {
-                    using (var stream = new FileStream(file, FileMode.Open))
-                    {
-                        byte[] buff = new byte[stream.Length];
+        //    using (var context = new ProfileSampleEntities())
+        //    {
+        //        foreach (var file in files)
+        //        {
+        //            using (var stream = new FileStream(file, FileMode.Open))
+        //            {
+        //                byte[] buff = new byte[stream.Length];
 
-                        stream.Read(buff, 0, (int) stream.Length);
+        //                stream.Read(buff, 0, (int) stream.Length);
 
-                        var entity = new ImgSource()
-                        {
-                            Name = Path.GetFileName(file),
-                            Data = buff,
-                        };
+        //                var entity = new ImgSource()
+        //                {
+        //                    Name = Path.GetFileName(file),
+        //                    Data = buff,
+        //                };
 
-                        context.ImgSources.Add(entity);
-                        context.SaveChanges();
-                    }
-                } 
-            }
+        //                context.ImgSources.Add(entity);
+        //                context.SaveChanges();
+        //            }
+        //        } 
+        //    }
 
-            return RedirectToAction("Index");
-        }
+        //    return RedirectToAction("Index");
+        //}
 
         public ActionResult Contact()
         {
