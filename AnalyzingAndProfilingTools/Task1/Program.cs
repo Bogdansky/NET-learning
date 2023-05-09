@@ -9,29 +9,13 @@ namespace Task1
         {
             var password = "VerySTR0nGP@$Sw0rd1234321mklsfamlkklsnkfnsdknvkjnu3992080jiocvnmkjJ@UHiuo3j9iq89482988";
 
-            var salt = new byte[16] { 80,
-190,
-253,
-197,
-173,
-213,
-232,
-21,
-4,
-213,
-251,
-20,
-195,
-237,
-76,
-85
-};
+            var salt = new byte[16] { 80, 190, 253, 197, 173, 213, 232, 21, 4, 213, 251, 20, 195, 237, 76, 85};
             
 
             var methods = new Methods();
 
+            _ = methods.GeneratePasswordHashUsingSaltOrigin(password, salt);
             _ = methods.GeneratePasswordHashUsingSaltOptimized(password, salt);
-            //_ = methods.GeneratePasswordHashUsingSaltOrigin(password, salt);
 
             Console.WriteLine("Bye, World!");
         }
