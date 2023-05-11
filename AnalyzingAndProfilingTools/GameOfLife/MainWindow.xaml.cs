@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Timers;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -9,7 +11,7 @@ namespace GameOfLife
         private Grid mainGrid;
         DispatcherTimer timer;   //  Generation timer
         private int genCounter;
-        private AdWindow[] adWindow;
+        private AdWindow[] adWindows;
 
 
         public MainWindow()
@@ -20,41 +22,39 @@ namespace GameOfLife
             timer = new DispatcherTimer();
             timer.Tick += OnTimer;
             timer.Interval = TimeSpan.FromMilliseconds(200);
-        }
 
+            adWindows = new AdWindow[2];
+        }
 
         private void StartAd()
         {
-            
+            for (int i = 0; i < 2; i++)
             {
-                adWindow = new AdWindow[2];
-                for (int i = 0; i < 2; i++)
+                if (adWindows[i] == null) 
                 {
-                    if (adWindow[i] == null)
-                    {
-                        adWindow[i] = new AdWindow(this);
-                        adWindow[i].Closed += AdWindowOnClosed;
-                        adWindow[i].Top = this.Top + (330 * i) + 70;
-                        adWindow[i].Left = this.Left + 240;                        
-                        adWindow[i].Show();
-                    }
+                    adWindows[i] = new AdWindow(this);
+                    adWindows[i].Closed += AdWindowOnClosed;
+                    adWindows[i].Top = Top + (330 * i) + 70;
+                    adWindows[i].Left = Left + 240;
+                    adWindows[i].Show();
                 }
-                
-                
             }
         }
 
         private void AdWindowOnClosed(object sender, EventArgs eventArgs)
         {
+            var adWindow = sender as AdWindow;
+
             for (int i = 0; i < 2; i++)
             {
-                adWindow[i].Closed -= AdWindowOnClosed;
-                adWindow[i] = null;
+                if (adWindow == adWindows[i])
+                {
+                    adWindows[i].Closed -= AdWindowOnClosed;
+                    adWindows[i] = null;
+                    break;
+                }
             }
-            
-            
         }
-
 
         private void Button_OnClick(object sender, EventArgs e)
         {
@@ -82,7 +82,5 @@ namespace GameOfLife
         {
             mainGrid.Clear();
         }
-
-        
     }
 }

@@ -7,7 +7,7 @@ using System.Windows.Threading;
 
 namespace GameOfLife
 {
-    class AdWindow : Window
+    class AdWindow : Window, IDisposable
     {
         private readonly DispatcherTimer adTimer;
         private int imgNmb;     // the number of the image currently shown
@@ -45,7 +45,7 @@ namespace GameOfLife
         
         protected override void OnClosed(EventArgs e)
         {
-            //Unsubscribe();
+            Dispose();
             base.OnClosed(e);
         } 
 
@@ -84,6 +84,12 @@ namespace GameOfLife
                     break;
             }
             
+        }
+
+        public void Dispose()
+        {
+            Unsubscribe();
+            adTimer.Stop();
         }
     }
 }
