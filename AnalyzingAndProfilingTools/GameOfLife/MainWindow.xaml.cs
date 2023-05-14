@@ -21,7 +21,7 @@ namespace GameOfLife
 
             timer = new DispatcherTimer();
             timer.Tick += OnTimer;
-            timer.Interval = TimeSpan.FromMilliseconds(200);
+            timer.Interval = TimeSpan.FromMilliseconds(100);
 
             adWindows = new AdWindow[2];
         }
@@ -30,6 +30,7 @@ namespace GameOfLife
         {
             for (int i = 0; i < 2; i++)
             {
+                // added to avoid creating two ads even if we already have one or two
                 if (adWindows[i] == null) 
                 {
                     adWindows[i] = new AdWindow(this);
@@ -47,6 +48,7 @@ namespace GameOfLife
 
             for (int i = 0; i < 2; i++)
             {
+                // to not corrupt opened adwindow
                 if (adWindow == adWindows[i])
                 {
                     adWindows[i].Closed -= AdWindowOnClosed;
@@ -81,6 +83,16 @@ namespace GameOfLife
         private void ButtonClear_Click(object sender, RoutedEventArgs e)
         {
             mainGrid.Clear();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            if (timer.IsEnabled)
+            {
+                timer.Stop();
+            }
+
+            base.OnClosed(e);
         }
     }
 }

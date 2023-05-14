@@ -45,6 +45,7 @@ namespace GameOfLife
         
         protected override void OnClosed(EventArgs e)
         {
+            // added to correctly close this window
             Dispose();
             base.OnClosed(e);
         } 
