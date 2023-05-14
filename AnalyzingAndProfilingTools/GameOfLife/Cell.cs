@@ -10,7 +10,6 @@ namespace GameOfLife
         public int PositionY { get; set; }
         public int Age { get; set; }
         public bool IsAlive { get; set; }
-        public Ellipse Ellipse { get; set; }    
 
 
         public Cell(int row, int column, int age, bool alive)
