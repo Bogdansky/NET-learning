@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 
 namespace Task1
 {
@@ -14,10 +15,10 @@ namespace Task1
 
             var methods = new Methods();
 
-            _ = methods.GeneratePasswordHashUsingSaltOrigin(password, salt);
-            _ = methods.GeneratePasswordHashUsingSaltOptimized(password, salt);
+            var hash2 = methods.GeneratePasswordHashUsingSaltOrigin(password, salt);
+            var hash1 = methods.GeneratePasswordHashUsingSaltOptimized(password, salt);
 
-            Console.WriteLine("Bye, World!");
+            Console.WriteLine("Bye, World! Guess what, {0}", hash1 == hash2);
         }
     }
 
@@ -25,14 +26,18 @@ namespace Task1
     {
         public string GeneratePasswordHashUsingSaltOrigin(string passwordText, byte[] salt)
         {
+            // can be constant
             var iterate = 10000;
 
+            // obsolete https://learn.microsoft.com/ru-ru/dotnet/api/system.security.cryptography.rfc2898derivebytes?view=net-7.0#constructors
+            // can use using
             var pbkdf2 = new Rfc2898DeriveBytes(passwordText, salt, iterate);
 
             byte[] hash = pbkdf2.GetBytes(20);
 
             byte[] hashBytes = new byte[36];
 
+            // not sure, can be replaced by circle copying
             Array.Copy(salt, 0, hashBytes, 0, 16);
             Array.Copy(hash, 0, hashBytes, 16, 20);
 
@@ -43,26 +48,21 @@ namespace Task1
 
         public string GeneratePasswordHashUsingSaltOptimized(string passwordText, byte[] salt)
         {
-            const int Iterate = 10000;
-
-            var pbkdf2 = new Rfc2898DeriveBytes(passwordText, salt, Iterate);
-
-            byte[] hash = pbkdf2.GetBytes(20);
+            const int iterate = 10000;
 
             byte[] hashBytes = new byte[36];
 
-            var index = 0;
-            for(; index < 16; index++)
+            using (var pbkdf2 = new Rfc2898DeriveBytes(passwordText, salt, iterate, HashAlgorithmName.SHA1))
             {
-                hashBytes[index] = salt[index];
+                byte[] hash = pbkdf2.GetBytes(20);
+
+                for(int i = 0, y = -16; i < hashBytes.Length; i++, y++)
+                {
+                    hashBytes[i] = y < 0 ? salt[i] : hash[y];
+                }
             }
 
-            for(var secondIndex = 0; secondIndex < 20; secondIndex++)
-            {
-                hashBytes[secondIndex + index] = hash[secondIndex];
-            }
-
-            var passwordHash = Convert.ToBase64String(hashBytes);
+            var passwordHash = Convert.ToBase64String(new ReadOnlySpan<byte>(hashBytes), Base64FormattingOptions.None);
 
             return passwordHash;
         }
