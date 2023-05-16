@@ -1,6 +1,7 @@
 ﻿using Expressions.Task3.E3SQueryProvider.Helpers;
 using Expressions.Task3.E3SQueryProvider.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -35,9 +36,9 @@ namespace Expressions.Task3.E3SQueryProvider.QueryProvider
             Type itemType = TypeHelper.GetElementType(expression.Type);
 
             var translator = new ExpressionToFtsRequestTranslator();
-            string queryString = translator.Translate(expression);
+            List<string> queries = translator.TranslateToRequest(expression);
 
-            return (TResult)_e3SClient.SearchFts(itemType, queryString);
+            return (TResult)_e3SClient.SearchFts(itemType, queries);
         }
     }
 }

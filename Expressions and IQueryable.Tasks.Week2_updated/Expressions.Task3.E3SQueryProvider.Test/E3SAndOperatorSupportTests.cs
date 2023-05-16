@@ -8,6 +8,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Expressions.Task3.E3SQueryProvider.Models.Entities;
@@ -19,12 +20,6 @@ namespace Expressions.Task3.E3SQueryProvider.Test
     {
         #region SubTask 3: AND operator support
 
-        [Fact]
-        public void TestAndQueryable()
-        {
-            var translator = new ExpressionToFtsRequestTranslator();
-            Expression<Func<IQueryable<EmployeeEntity>, IQueryable<EmployeeEntity>>> expression
-                = query => query.Where(e => e.Workstation == "EPRUIZHW006" && e.Manager.StartsWith("John"));
             /*
              * The expression above should be converted to the following FTSQueryRequest and then serialized inside FTSRequestGenerator:
              * "statements": [
@@ -33,9 +28,21 @@ namespace Expressions.Task3.E3SQueryProvider.Test
                 // Operator between queries is AND, in other words result set will fit to both statements above
               ],
              */
+        [Fact]
+        public void TestAndQueryable()
+        {
+            const string BaseAddress = "https://example.com";
+            List<string> ExpectedResult = new List<string> { "Workstation:(EPRUIZHW006)", "Manager:(John*)" };
 
-            // todo: create asserts for this test by yourself, because they will depend on your final implementation
-            throw new NotImplementedException("Please implement this test and the appropriate functionality");
+            var requestGenerator = new FtsRequestGenerator(BaseAddress);
+
+            var translator = new ExpressionToFtsRequestTranslator();
+            Expression<Func<IQueryable<EmployeeEntity>, IQueryable<EmployeeEntity>>> expression
+                = query => query.Where(e => e.Workstation == "EPRUIZHW006" && e.Manager.StartsWith("John"));
+
+            var translatedQueries = translator.TranslateToRequest(expression);
+
+            Assert.Equal(translatedQueries, ExpectedResult);
         }
 
         #endregion
