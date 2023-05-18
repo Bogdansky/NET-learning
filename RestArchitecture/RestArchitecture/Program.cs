@@ -1,3 +1,6 @@
+using System.Reflection;
+using Infrastructure;
+
 namespace RestArchitecture
 {
     public class Program
@@ -8,10 +11,7 @@ namespace RestArchitecture
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            ConfigureServices(builder.Services);
 
             var app = builder.Build();
 
@@ -30,6 +30,20 @@ namespace RestArchitecture
             app.MapControllers();
 
             app.Run();
+        }
+
+        internal static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
+
+            services.AddScoped<CatalogContext>();
+
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            });
         }
     }
 }

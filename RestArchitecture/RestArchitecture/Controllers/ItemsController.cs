@@ -2,6 +2,8 @@
 
 namespace RestArchitecture.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class ItemsController : Controller
     {
         private readonly ILogger<ItemsController> _logger;
