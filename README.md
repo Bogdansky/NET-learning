@@ -1,6 +1,6 @@
 # NET-learning
 
-## Module 7 Rest
+## Module 7 REST
 Create REST based WEB API for Catalog Service.
 
 Functional Requirements:
