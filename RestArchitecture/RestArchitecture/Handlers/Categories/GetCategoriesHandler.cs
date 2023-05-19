@@ -2,7 +2,7 @@
 using Infrastructure.Models;
 using MediatR;
 
-namespace RestArchitecture.Handlers.Catalogs
+namespace RestArchitecture.Handlers.Categories
 {
     public class GetCategoriesHandler : IRequestHandler<GetCategoriesRequest, List<Category>>
     {

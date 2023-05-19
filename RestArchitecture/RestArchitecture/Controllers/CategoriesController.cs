@@ -2,7 +2,7 @@ using Infrastructure.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RestArchitecture.Constants;
-using RestArchitecture.Handlers.Catalogs;
+using RestArchitecture.Handlers.Categories;
 using RestArchitecture.Models;
 
 namespace RestArchitecture.Controllers

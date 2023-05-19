@@ -1,7 +1,7 @@
 ﻿using Infrastructure;
 using MediatR;
 
-namespace RestArchitecture.Handlers.Catalogs
+namespace RestArchitecture.Handlers.Categories
 {
     public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryRequest, bool>
     {

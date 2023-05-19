@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RestArchitecture.Constants;
-using RestArchitecture.Handlers.Catalogs;
+using RestArchitecture.Handlers.Categories;
 using RestArchitecture.Handlers.Items;
 using RestArchitecture.Models;
 
