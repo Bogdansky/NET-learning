@@ -1,19 +1,18 @@
 ﻿using Infrastructure;
-using Infrastructure.Models;
 using MediatR;
 
 namespace RestArchitecture.Handlers.Catalogs
 {
-    public class AddCatalogHandler : IRequestHandler<AddCatalogRequest, int>
+    public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryRequest, bool>
     {
         private readonly CatalogContext _dbContext;
 
-        public AddCatalogHandler(CatalogContext dbContext) 
+        public DeleteCategoryHandler(CatalogContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public Task<int> Handle(AddCatalogRequest request, CancellationToken cancellationToken)
+        public Task<bool> Handle(DeleteCategoryRequest request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

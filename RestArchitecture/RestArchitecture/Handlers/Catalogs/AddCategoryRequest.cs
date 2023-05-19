@@ -3,11 +3,11 @@ using MediatR;
 
 namespace RestArchitecture.Handlers.Catalogs
 {
-    public class AddCatalogRequest : IRequest<int>
+    public class AddCategoryRequest : IRequest<int>
     {
-        public CatalogDto Catalog { get; }
+        public CategoryDto Catalog { get; }
 
-        public AddCatalogRequest(CatalogDto catalog) 
+        public AddCategoryRequest(CategoryDto catalog) 
         { 
             Catalog = catalog;
         }

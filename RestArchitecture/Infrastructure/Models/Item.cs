@@ -13,6 +13,6 @@ namespace Infrastructure.Models
         public string Description { get; set; }
         public double Price { get; set; }
         public int CatalogId { get; set; }
-        public virtual Catalog Catalog { get; set; }
+        public virtual Category Catalog { get; set; }
     }
 }

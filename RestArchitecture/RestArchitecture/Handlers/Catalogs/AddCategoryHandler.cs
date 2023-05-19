@@ -4,16 +4,16 @@ using MediatR;
 
 namespace RestArchitecture.Handlers.Catalogs
 {
-    public class UpdateCatalogHandler : IRequestHandler<UpdateCatalogRequest, bool>
+    public class AddCategoryHandler : IRequestHandler<AddCategoryRequest, int>
     {
         private readonly CatalogContext _dbContext;
 
-        public UpdateCatalogHandler(CatalogContext dbContext)
+        public AddCategoryHandler(CatalogContext dbContext) 
         {
             _dbContext = dbContext;
         }
 
-        public Task<bool> Handle(UpdateCatalogRequest request, CancellationToken cancellationToken)
+        public Task<int> Handle(AddCategoryRequest request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

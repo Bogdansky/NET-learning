@@ -3,10 +3,10 @@ using MediatR;
 
 namespace RestArchitecture.Handlers.Catalogs
 {
-    public class UpdateCatalogRequest : IRequest<bool>
+    public class UpdateCategoryRequest : IRequest<bool>
     {
-        public CatalogDto Catalog { get; }
-        public UpdateCatalogRequest(CatalogDto catalog)
+        public CategoryDto Catalog { get; }
+        public UpdateCategoryRequest(CategoryDto catalog)
         {
             Catalog = catalog;
         }

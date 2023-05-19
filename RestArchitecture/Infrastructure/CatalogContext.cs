@@ -17,7 +17,7 @@ namespace Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Catalog>(entity =>
+            modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(c => c.Id);
 
@@ -41,7 +41,7 @@ namespace Infrastructure
             });
         }
 
-        public DbSet<Catalog> Catalogs { get; set; }
+        public DbSet<Category> Catalogs { get; set; }
         public DbSet<Item> Items { get; set; }
     }
 }

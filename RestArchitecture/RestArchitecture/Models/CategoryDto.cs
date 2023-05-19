@@ -1,9 +1,9 @@
 ﻿namespace RestArchitecture.Models
 {
-    public class CatalogDto
+    public class CategoryDto
     {
         public string Name { get; }
-        public CatalogDto(string name)
+        public CategoryDto(string name)
         {
             Name = name;
         }

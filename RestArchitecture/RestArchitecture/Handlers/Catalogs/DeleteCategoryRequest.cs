@@ -2,10 +2,10 @@
 
 namespace RestArchitecture.Handlers.Catalogs
 {
-    public class DeleteCatalogRequest : IRequest<bool>
+    public class DeleteCategoryRequest : IRequest<bool>
     {
         public int CatalogId { get; }
-        public DeleteCatalogRequest(int catalogId)
+        public DeleteCategoryRequest(int catalogId)
         {
             CatalogId = catalogId;
         }
