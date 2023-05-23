@@ -1,6 +1,7 @@
 ﻿using Infrastructure;
 using Infrastructure.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace RestArchitecture.Handlers.Categories
 {
@@ -13,9 +14,9 @@ namespace RestArchitecture.Handlers.Categories
             _dbContext = dbContext;
         }
 
-        public Task<List<Category>> Handle(GetCategoriesRequest request, CancellationToken cancellationToken)
+        public async Task<List<Category>> Handle(GetCategoriesRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Categories.ToListAsync(cancellationToken);
         }
     }
 }

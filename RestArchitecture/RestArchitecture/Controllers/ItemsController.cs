@@ -21,8 +21,8 @@ namespace RestArchitecture.Controllers
         }
 
         [HttpGet(Name = "Items_GetItems")]
-        [Route("{categoryId}")]
-        public async Task<IActionResult> GetItems([FromRoute]int categoryId, [FromQuery]int? pageNumber, [FromQuery]int? pageSize)
+        [Route("{categoryId}/items")]
+        public async Task<IActionResult> GetItems([FromRoute]int categoryId, [FromQuery]int pageNumber, [FromQuery]int pageSize)
         {
             try
             {
@@ -74,8 +74,7 @@ namespace RestArchitecture.Controllers
             }
         }
 
-        [HttpDelete(Name = "Items_DeleteItem")]
-        [Route("{categoryId}")]
+        [HttpDelete("{itemId}", Name = "Items_DeleteItem")]
         public async Task<IActionResult> DeleteItem(int itemId)
         {
             try

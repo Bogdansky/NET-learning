@@ -13,9 +13,22 @@ namespace RestArchitecture.Handlers.Categories
             _dbContext = dbContext;
         }
 
-        public Task<int> Handle(AddCategoryRequest request, CancellationToken cancellationToken)
+        public async Task<int> Handle(AddCategoryRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (request.Category is null)
+            {
+                throw new ArgumentNullException(nameof(request.Category));
+            }
+
+            var category = new Category
+            {
+                Name = request.Category.Name
+            };
+
+            _dbContext.Categories.Add(category);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return category.Id;
         }
     }
 }

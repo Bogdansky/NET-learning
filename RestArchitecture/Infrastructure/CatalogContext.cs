@@ -22,7 +22,8 @@ namespace Infrastructure
                 entity.HasKey(c => c.Id);
 
                 entity.HasMany<Item>()
-                    .WithOne(c => c.Catalog);
+                    .WithOne(c => c.Category)
+                    .OnDelete(DeleteBehavior.ClientCascade);
 
                 entity.Property(c => c.Name).IsRequired();
             });
@@ -32,16 +33,16 @@ namespace Infrastructure
             {
                 entity.HasKey(i => i.Id);
 
-                entity.HasOne(i => i.Catalog)
+                entity.HasOne(i => i.Category)
                     .WithMany(c => c.Items)
-                    .HasForeignKey(i => i.CatalogId);
+                    .HasForeignKey(i => i.CategoryId);
 
                 entity.Property(c => c.Name).IsRequired();
                 entity.Property(c => c.Description).IsRequired();
             });
         }
 
-        public DbSet<Category> Catalogs { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<Item> Items { get; set; }
     }
 }

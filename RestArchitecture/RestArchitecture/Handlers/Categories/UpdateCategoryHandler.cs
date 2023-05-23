@@ -13,9 +13,25 @@ namespace RestArchitecture.Handlers.Categories
             _dbContext = dbContext;
         }
 
-        public Task<bool> Handle(UpdateCategoryRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateCategoryRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (request.Category is null)
+            {
+                throw new ArgumentNullException(nameof(request.Category));
+            }
+
+            var category = await _dbContext.Categories.FindAsync(request.Category.Id, cancellationToken);
+
+            if (category is null)
+            {
+                throw new Exception($"The category with id {request.Category.Id} does not exist");
+            }
+
+            category.Name = request.Category.Name;
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return true;
         }
     }
 }

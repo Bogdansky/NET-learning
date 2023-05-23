@@ -4,10 +4,10 @@ namespace RestArchitecture.Handlers.Categories
 {
     public class DeleteCategoryRequest : IRequest<bool>
     {
-        public int CatalogId { get; }
-        public DeleteCategoryRequest(int catalogId)
+        public int CategoryId { get; }
+        public DeleteCategoryRequest(int categoryId)
         {
-            CatalogId = catalogId;
+            CategoryId = categoryId;
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Infrastructure;
 
 namespace RestArchitecture
@@ -34,11 +35,18 @@ namespace RestArchitecture
 
         internal static void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            services.AddScoped<CatalogContext>();
+            var context = new CatalogContext();
+
+            context.InitializeInMemoryDatabase();
+
+            services.AddSingleton((provider) => context);
 
             services.AddMediatR(cfg =>
             {
