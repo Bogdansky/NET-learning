@@ -28,7 +28,6 @@ namespace Infrastructure
                 entity.Property(c => c.Name).IsRequired();
             });
 
-
             modelBuilder.Entity<Item>(entity =>
             {
                 entity.HasKey(i => i.Id);

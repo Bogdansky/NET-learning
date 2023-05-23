@@ -1,9 +1,9 @@
-using Infrastructure.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RestArchitecture.Constants;
 using RestArchitecture.Handlers.Categories;
 using RestArchitecture.Models;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RestArchitecture.Controllers
 {
@@ -20,7 +20,8 @@ namespace RestArchitecture.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet(Name = "Categories_GetCategories")]
+        [HttpGet]
+        [SwaggerOperation(OperationId = "Categories_GetCategories")]
         public async Task<IActionResult> GetCategories()
         {
             try
@@ -36,7 +37,8 @@ namespace RestArchitecture.Controllers
             }
         }
 
-        [HttpPost(Name = "Categories_AddCategory")]
+        [HttpPost]
+        [SwaggerOperation(OperationId = "Categories_AddCategory")]
         public async Task<IActionResult> AddCategory([FromBody]CategoryDto category)
         {
             try
@@ -52,7 +54,8 @@ namespace RestArchitecture.Controllers
             }
         }
 
-        [HttpPut(Name = "Categories_UpdateCategory")]
+        [HttpPut]
+        [SwaggerOperation(OperationId = "Categories_UpdateCategory")]
         public async Task<IActionResult> UpdateCategory([FromBody] CategoryDto category)
         {
             try
@@ -68,8 +71,8 @@ namespace RestArchitecture.Controllers
             }
         }
 
-        [HttpDelete(Name = "Categories_DeleteCategory")]
-        [Route("{categoryId}")]
+        [HttpDelete]
+        [SwaggerOperation(OperationId = "Categories_DeleteCategory")]
         public async Task<IActionResult> DeleteCategory(int categoryId)
         {
             try

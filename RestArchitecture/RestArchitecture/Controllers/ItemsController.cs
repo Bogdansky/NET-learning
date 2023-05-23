@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RestArchitecture.Constants;
-using RestArchitecture.Handlers.Categories;
 using RestArchitecture.Handlers.Items;
 using RestArchitecture.Models;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RestArchitecture.Controllers
 {
@@ -20,8 +20,8 @@ namespace RestArchitecture.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet(Name = "Items_GetItems")]
-        [Route("{categoryId}/items")]
+        [HttpGet("{categoryId}/items")]
+        [SwaggerOperation(OperationId = "Items_GetItems")]
         public async Task<IActionResult> GetItems([FromRoute]int categoryId, [FromQuery]int pageNumber, [FromQuery]int pageSize)
         {
             try
@@ -42,7 +42,8 @@ namespace RestArchitecture.Controllers
             }
         }
 
-        [HttpPost(Name = "Items_AddItem")]
+        [HttpPost]
+        [SwaggerOperation(OperationId = "Items_AddItem")]
         public async Task<IActionResult> AddItem([FromBody] ItemDto item)
         {
             try
@@ -58,7 +59,8 @@ namespace RestArchitecture.Controllers
             }
         }
 
-        [HttpPut(Name = "Items_UpdateItem")]
+        [HttpPut]
+        [SwaggerOperation(OperationId = "Items_UpdateItem")]
         public async Task<IActionResult> UpdateItem([FromBody] ItemDto item)
         {
             try
@@ -74,7 +76,8 @@ namespace RestArchitecture.Controllers
             }
         }
 
-        [HttpDelete("{itemId}", Name = "Items_DeleteItem")]
+        [HttpDelete("{itemId}")]
+        [SwaggerOperation(OperationId = "Items_DeleteItem")]
         public async Task<IActionResult> DeleteItem(int itemId)
         {
             try
