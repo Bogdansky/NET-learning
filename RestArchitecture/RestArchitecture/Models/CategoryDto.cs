@@ -3,10 +3,6 @@
     public class CategoryDto
     {
         public int Id { get; set; }
-        public string Name { get; }
-        public CategoryDto(string name)
-        {
-            Name = name;
-        }
+        public string Name { get; set; }
     }
 }
