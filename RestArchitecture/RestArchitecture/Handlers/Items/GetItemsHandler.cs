@@ -2,10 +2,11 @@
 using Infrastructure.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using RestArchitecture.Models;
 
 namespace RestArchitecture.Handlers.Items
 {
-    public class GetItemsHandler : IRequestHandler<GetItemsRequest, List<Item>>
+    public class GetItemsHandler : IRequestHandler<GetItemsRequest, List<ItemDto>>
     {
         private readonly CatalogContext _dbContext;
 
@@ -14,22 +15,28 @@ namespace RestArchitecture.Handlers.Items
             _dbContext = dbContext;
         }
 
-        public async Task<List<Item>> Handle(GetItemsRequest request, CancellationToken cancellationToken)
+        public async Task<List<ItemDto>> Handle(GetItemsRequest request, CancellationToken cancellationToken)
         {
-            var category = await _dbContext.Categories
-                .Include(x => x.Items)
-                .Where(x => x.Id == request.CategoryId)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (category is null)
-            {
-                throw new Exception($"The category with id {request.CategoryId} does not exist");
-            }
-
-            return category.Items
+            var items = await _dbContext.Items
+                .Where(x => x.CategoryId == request.CategoryId)
                 .Skip(request.PageSize * (request.PageNumber - 1))
                 .Take(request.PageSize)
-                .ToList();
+                .Select(x => new ItemDto
+                {
+                    Id= x.Id,
+                    Name = x.Name,
+                    Description= x.Description, 
+                    Price = x.Price,
+                    CategoryId = x.CategoryId,
+                })
+                .ToListAsync(cancellationToken);
+
+            if (items is null || items.Count == 0)
+            {
+                throw new Exception($"No items with category id {request.CategoryId}");
+            }
+
+            return items;
         }
     }
 }
