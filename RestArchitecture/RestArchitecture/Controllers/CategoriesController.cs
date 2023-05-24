@@ -33,7 +33,7 @@ namespace RestArchitecture.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, ControllersConsts.CategoriesExceptionTemplate, nameof(GetCategories));
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
 
@@ -50,7 +50,7 @@ namespace RestArchitecture.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, ControllersConsts.CategoriesExceptionTemplate, nameof(AddCategory));
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
 
@@ -67,7 +67,7 @@ namespace RestArchitecture.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, ControllersConsts.CategoriesExceptionTemplate, nameof(UpdateCategory));
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
 
@@ -84,7 +84,7 @@ namespace RestArchitecture.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, ControllersConsts.CategoriesExceptionTemplate, nameof(DeleteCategory));
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
     }

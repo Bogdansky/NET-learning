@@ -55,7 +55,7 @@ namespace RestArchitecture.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, ControllersConsts.ItemsExceptionTemplate, nameof(AddItem));
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
 
@@ -72,7 +72,7 @@ namespace RestArchitecture.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, ControllersConsts.ItemsExceptionTemplate, nameof(UpdateItem));
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
 
@@ -89,7 +89,7 @@ namespace RestArchitecture.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, ControllersConsts.ItemsExceptionTemplate, nameof(DeleteItem));
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
     }
