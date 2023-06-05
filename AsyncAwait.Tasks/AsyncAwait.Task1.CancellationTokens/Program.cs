@@ -8,15 +8,15 @@
 */
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AsyncAwait.Task1.CancellationTokens;
 
 internal class Program
 {
-    /// <summary>
-    /// The Main method should not be changed at all.
-    /// </summary>
-    /// <param name="args"></param>
+    private static CancellationTokenSource _currentCancellationSource;
+
     private static void Main(string[] args)
     {
         Console.WriteLine("Mentoring program L2. Async/await.V1. Task 1");
@@ -27,11 +27,20 @@ internal class Program
         Console.WriteLine("Enter N: ");
 
         var input = Console.ReadLine();
+
+
         while (input.Trim().ToUpper() != "Q")
         {
+            if (_currentCancellationSource is not null)
+            {
+                _currentCancellationSource.Cancel();
+            }
+
+            _currentCancellationSource = new CancellationTokenSource();
+
             if (int.TryParse(input, out var n))
             {
-                CalculateSum(n);
+                CalculateSum(n, _currentCancellationSource.Token);
             }
             else
             {
@@ -46,16 +55,20 @@ internal class Program
         Console.ReadLine();
     }
 
-    private static void CalculateSum(int n)
+    private static void CalculateSum(int n, CancellationToken cancellationToken)
     {
-        // todo: make calculation asynchronous
-        var sum = Calculator.Calculate(n);
-        Console.WriteLine($"Sum for {n} = {sum}.");
-        Console.WriteLine();
-        Console.WriteLine("Enter N: ");
-        // todo: add code to process cancellation and uncomment this line    
-        // Console.WriteLine($"Sum for {n} cancelled...");
-
         Console.WriteLine($"The task for {n} started... Enter N to cancel the request:");
+        Calculator.CalculateAsync(n, cancellationToken)
+            .ContinueWith(resTask =>
+            {
+                var sum = resTask.Result;
+                Console.WriteLine($"Sum for {n} = {sum}.");
+                Console.WriteLine();
+                Console.WriteLine("Enter N: ");
+            }, TaskContinuationOptions.OnlyOnRanToCompletion)
+            .ContinueWith(task =>
+            {
+                Console.WriteLine($"Sum for {n} cancelled...");
+            }, TaskContinuationOptions.OnlyOnCanceled);
     }
 }
