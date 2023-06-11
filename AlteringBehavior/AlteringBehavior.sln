@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlteringBehavior", "AlteringBehavior.csproj", "{B0BD6C60-BEEB-4895-BBFF-6A898BD343CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlteringBehavior.Tests", "..\AlteringBehavior.Tests\AlteringBehavior.Tests.csproj", "{AF023FD5-4009-4D38-A01C-2FDC16145DBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{B0BD6C60-BEEB-4895-BBFF-6A898BD343CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0BD6C60-BEEB-4895-BBFF-6A898BD343CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0BD6C60-BEEB-4895-BBFF-6A898BD343CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF023FD5-4009-4D38-A01C-2FDC16145DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF023FD5-4009-4D38-A01C-2FDC16145DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF023FD5-4009-4D38-A01C-2FDC16145DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF023FD5-4009-4D38-A01C-2FDC16145DBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
